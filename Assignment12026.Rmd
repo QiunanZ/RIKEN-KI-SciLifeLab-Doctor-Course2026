@@ -1,0 +1,520 @@
+---
+title: "Assignment 1"
+output: html_notebook
+---
+
+
+<h3><b>Task 1
+
+Q1. What is the medically relevant insight from the article?
+
+A1. The paper presents a single-cell atlas of transcribed cis-regulatory elements (tCREs) across human tissues.
+Key medical insight: Many disease-associated genetic variants are located in non-coding regions. Identifying cell-type-specific regulatory elements can help explain how these variants influence gene expression and contribute to complex diseases.
+The atlas also shows that different cell types may use different regulatory elements to control the same gene, which may reveal disease mechanisms missed by gene-expression analysis alone.
+
+
+Q2. Which genomics technology/ technologies were used?
+
+A2. 
+Single-cell 5′ RNA-seq: Main technology to identify transcription start sites and transcribed regulatory elements.
+scATAC-seq: To examine chromatin accessibility.
+Bulk RNA-seq and CAGE: To validate transcriptional activity and transcription start sites.
+Promoter-capture Hi-C: To investigate interactions between distal regulatory elements and promoters.
+
+Q3. List and explain at least three questions/ hypotheses you can think of that extend the analysis presented in the paper.
+
+A3. 
+・How do regulatory elements contribute to disease-associated genetic variants?
+・How does cellular activation change regulatory-element activity?
+・Do males and females have different regulatory mechanisms in disease-relevant cells?
+
+
+
+<h3><b>Task 2
+
+The new project has been started in Github.
+
+
+
+
+<h3><b>Task 3
+
+1. The latest version of R stadio has been installed.
+
+2. Bioconductor installation
+
+```{r}
+# Background work
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install()
+```
+
+3. Tidyverse installation
+
+```{r}
+if (!requireNamespace("tidyverse", quietly = TRUE))
+  install.packages("tidyverse")
+```
+
+4.Related introduction has be reviewed.
+
+
+
+
+<h3><b>Task 4
+
+1. What is the square root of 10?
+
+```{r}
+sqrt(10)
+```
+
+2. What is the logarithm of 32 to the base 2?
+
+```{r}
+log(32, base = 2)
+```
+
+3. What is the sum of the numbers from 1 to 1000?
+
+```{r}
+sum(1:1000)
+```
+
+4. What is the sum of all even numbers from 2 to 1000?
+
+```{r}
+sum(seq(2, 1000, by = 2))
+```
+
+5. How many pairwise comparisons are there for 100 genes?
+```{r}
+choose(100, 2)
+```
+
+6. And how many ways to arrange 100 genes in triples?
+
+```{r}
+factorial(100) / factorial(100 - 3)
+```
+
+
+
+
+
+<h3><b>Task 5
+
+1. Use the R internal CO2 dataset (“data(CO2)”).
+```{r}
+data(CO2)
+```
+
+2. Describe briefly the content of the CO2 dataset using the help function.
+```{r}
+?CO2
+```
+Description: The CO2 data frame has 84 rows and 5 columns of data from an experiment on the cold tolerance of the grass species Echinochloa crus-galli.
+
+3. What is the average and median CO2 uptake of the plants from Quebec and Mississippi?
+
+```{r}
+library(dplyr)
+CO2 %>% 
+  group_by(Type) %>%
+  summarise(mean_uptake = mean(uptake), median_uptake = median(uptake))
+```
+
+4. [Optional] In the “airway” example data from Bioconductor, how many genes are expressed in each sample? How many genes are not expressed in any sample?
+
+```{r}
+BiocManager::install("airway", ask = FALSE, update = TRUE)
+library(airway)
+data("airway")
+Expression <- assay(airway) 
+# Number of expressed genes (non-zero) per sample
+expressed_per_sample <- colSums(Expression > 0)
+# Number of genes not expressed in any sample
+not_expressed <- sum(rowSums(Expression > 0) == 0)
+#print
+expressed_per_sample
+not_expressed
+```
+
+
+
+<h3><b>Task 6
+
+1. Write a function that calculates the ratio of the mean and the median of a given vector.
+```{r}
+mean_median_ratio <- function(x) {
+  return(mean(x) / median(x))
+}
+```
+
+2. Write a function that ignores the lowest and the highest value from a given vector and calculate the mean.
+
+```{r}
+mean_trimmed <- function(x) {
+  x_sorted <- sort(x)
+  return(mean(x_sorted[2:(length(x_sorted) - 1)]))
+}
+```
+
+3. Read about piping from here:https://r4ds.had.co.nz/pipes.html#pipes ). Write a short (max. 300 characters, no spaces) explanation of why, how, and when not to use pipes.
+
+A: Pipes make code clearer by chaining functions in order. Use them when applying multiple processes step by step. Avoid using them when logic is too complex.
+
+4. Familiarize yourself with the apply-family of functions (apply, lapply, sapply etc.)
+Write a short explanation (max. 300 characters, no spaces) of why they could be useful in your work.
+
+A: Apply functions help replace explicit loops, making code shorter and faster. 
+They are useful for applying a function across rows, columns, or list elements without writing repetitive for loops.
+
+
+
+-----
+<h3><b>Task 7
+1. Compare the distributions of the body heights of the two species from the 'magic_guys.csv' dataset graphically
+a. using the basic 'hist' function as well as ‘ggplot’ and ‘geom_histogram’ functions from the ggplot2 package. Optimize the plots for example by trying several different 'breaks'. Note that ggplot2-based functions give you many more options for changing the visualization parameters, try some of them.
+
+A:
+a-1 basic hist
+
+```{r}
+data <- read.csv("magic_guys.csv")
+hist(data$length[data$species == "jedi"], 
+     breaks = 20, col = rgb(1, 0, 0, 0.5),
+     xlim = range(data$length), main = "Height Distribution",
+     xlab = "Height")
+```
+
+```{r}
+hist(data$length[data$species == "sith"], 
+     breaks = 20, col = rgb(1, 0, 0, 0.5),
+     xlim = range(data$length), main = "Height Distribution",
+     xlab = "Height")
+```
+
+```{r}
+# different "break" value
+hist(data$length[data$species == "jedi"], 
+     breaks = 10, col = rgb(1, 0, 0, 0.5),
+     xlim = range(data$length), main = "Height Distribution",
+     xlab = "Height")
+```
+
+```{r}
+hist(data$length[data$species == "sith"], 
+     breaks = 10, col = rgb(1, 0, 0, 0.5),
+     xlim = range(data$length), main = "Height Distribution",
+     xlab = "Height")
+```
+
+  a-2-1 ggplot
+  
+```{r}
+library(ggplot2)
+ggplot(data, aes(x = length, fill = species)) +
+  geom_histogram(alpha = 0.6, position = "identity", bins = 20) +
+  theme_minimal() +
+  labs(title = "Height Distribution by Species")
+```
+  
+  a-2-2 ggplot parameter changing
+  
+```{r}
+ggplot(data, aes(x = length, fill = species)) +
+  geom_histogram(alpha = 0.6, position = "identity", bins = 15) +
+  theme_minimal() +
+  labs(title = "Height Distribution by Species (bins = 15)")
+```  
+
+b. Do the same comparison as in a. but with boxplots. If you want to use the ggplot2-package, use the functions ‘ggplot’ and ‘geom_boxplot’.
+
+A:
+b-1 basic R
+
+```{r}
+boxplot(length ~ species, data = data, col = c("lightpink", "lightblue"),
+        main = "Boxplot of Heights", ylab = "Height")
+```
+
+b-2 ggplot
+
+```{r}
+ggplot(data, aes(x = species, y = length, fill = species)) +
+  geom_boxplot(alpha = 0.7) +
+  theme_minimal() +
+  labs(title = "Boxplot of Heights")
+```
+
+
+c. Save the plots with the ‘png’, ‘pdf’, and ‘svg’ formats. In which situation would you use which file format?
+
+```{r}
+png("boxplot.png"); print(
+  ggplot(data, aes(x = species, y = length, fill = species)) +
+  geom_boxplot(alpha = 0.7) +
+  theme_minimal() +
+  labs(title = "Boxplot of Heights"));
+#  dev.off()
+```
+
+```{r}
+pdf("boxplot.pdf"); print(
+  ggplot(data, aes(x = species, y = length, fill = species)) +
+  geom_boxplot(alpha = 0.7) +
+  theme_minimal() +
+  labs(title = "Boxplot of Heights"));
+#  dev.off()
+```
+
+```{r}
+svg("boxplot.svg"); print(
+  ggplot(data, aes(x = species, y = length, fill = species)) +
+  geom_boxplot(alpha = 0.7) +
+  theme_minimal() +
+  labs(title = "Boxplot of Heights"));
+#  dev.off()
+```
+
+PNG → good for quick viewing, slides, or raster images.
+
+PDF → vector graphics, best for publications.
+
+SVG → scalable web graphics, useful for editing in Illustrator or Inkscape.
+
+
+
+2. Load the gene expression data matrix from the ‘microarray_data.tab’ dataset provided in the shared folder, it is a big tabular separated matrix.
+a. How big is the matrix in terms of rows and columns?
+
+A:
+553 rows and 1000 columns.
+
+```{r}
+microarray <- read.table("microarray_data.tab", header = TRUE, sep = "\t")
+# Dimensions
+dim(microarray)
+```
+b. Count the missing values per gene and visualize this result.
+
+A:
+b-1
+
+```{r}
+missing_counts <- rowSums(is.na(microarray))
+hist(missing_counts, main = "Missing values per gene", xlab = "Missing values")
+```
+b-2
+
+```{r}
+names(missing_counts) <- paste0("Gene", seq_along(missing_counts))
+barplot(missing_counts,
+        names.arg = names(missing_counts),   #  gene num
+        las = 2,                      
+        cex.names = 0.6,              # font size
+        main = "Missing values per gene",
+        xlab = "Gene index",
+        ylab = "Missing values",
+        col = "grey30",
+        border = NA)
+```
+
+
+
+c. Find the genes for which there are more than X% (X=10%, 20%, 50%) missing values.
+
+A:
+c-1
+
+```{r}
+genes_missing <- function(x) {
+  n_samples <- ncol(microarray)
+  return (which(missing_counts > x / 100 * n_samples))
+}
+genes_missing(10)
+```
+c-2
+
+```{r}
+genes_missing(20)
+```
+
+c-3
+
+```{r}
+genes_missing(50)
+```
+
+d. Replace the missing values by the average expression value for the particular gene. (Note: Imputing data has to be used with caution!)
+A:
+
+```{r}
+microarray_imputed <- microarray
+row_means <- rowMeans(microarray, na.rm = TRUE)
+for (i in 1:nrow(microarray_imputed)) {
+  microarray_imputed[i, is.na(microarray_imputed[i, ])] <- row_means[i]
+}
+# test
+missing_counts_2 <- rowSums(is.na(microarray_imputed))
+missing_counts_2
+```
+
+
+3. Visualize the data in the CO2 dataset in a way that gives you a deeper understanding of the data. What do you see?
+A:
+Plants from Quebec and Mississippi respond differently to CO2 concentration.
+Treatment (chilled vs nonchilled) also influences uptake.
+
+```{r}
+# Scatter plot of uptake vs concentration by Type and Treatment
+ggplot(CO2, aes(x = conc, y = uptake, color = Type, shape = Treatment)) +
+  geom_point() +
+  geom_smooth(method = "loess", se = FALSE) +
+  theme_minimal() +
+  labs(title = "CO2 Uptake vs Concentration",
+       x = "CO2 concentration",
+       y = "Uptake")
+```
+
+
+<h3><b>Task 8
+
+1. Install the Tidybiology package, which includes the data ‘chromosome’ and ‘proteins’ devtools::install_github("hirscheylab/tidybiology")
+
+A:
+Installation
+
+```{r}
+#if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+devtools::install_github("hirscheylab/tidybiology")
+
+# Load packages
+library(tidybiology)
+library(tidyverse)
+# Load the datasets
+data("chromosome")
+data("proteins")
+```
+
+a. Extract summary statistics (mean, median and maximum) for the following variables from the ‘chromosome’ data: variations, protein coding genes, and miRNAs. Utilize the tidyverse functions to make this as simply as possible.
+
+A:
+
+```{r}
+c <- chromosome %>%
+  summarise(
+    mean_variations = mean(variations, na.rm = TRUE),
+    median_variations = median(variations, na.rm = TRUE),
+    max_variations = max(variations, na.rm = TRUE),
+    
+    mean_protein_coding = mean(protein_codinggenes, na.rm = TRUE),
+    median_protein_coding = median(protein_codinggenes, na.rm = TRUE),
+    max_protein_coding = max(protein_codinggenes, na.rm = TRUE),
+    
+    mean_miRNAs = mean(mi_rna, na.rm = TRUE),
+    median_miRNAs = median(mi_rna, na.rm = TRUE),
+    max_miRNAs = max(mi_rna, na.rm = TRUE)
+  )
+c
+```
+
+b. How does the chromosome size distribute? Plot a graph that helps to visualize this by using ggplot2 package functions.
+
+A:
+
+```{r}
+ggplot(chromosome, aes(x = basepairs)) +
+  geom_histogram(bins = 20, fill = "steelblue", color = "black", alpha = 0.7) +
+  theme_minimal() +
+  labs(title = "Distribution of Chromosome Size", x = "Chromosome Size (bp)", y = "Count")
+```
+
+or
+
+```{r}
+# or
+ggplot(chromosome, aes(x = id, y = basepairs)) +
+  geom_bar(stat = "identity", fill = "steelblue", color = "black", alpha = 0.7) +
+  theme_minimal() +
+  labs(
+    title = "Chromosome Size (bp)",
+    x = "Chromosome",
+    y = "Size (bp)"
+  )
+```
+
+c. Does the number of protein coding genes or miRNAs correlate with the length of the chromosome? Make two separate plots to visualize these relationships.
+
+A:
+c-1 protein coding gene
+
+```{r}
+# Protein coding genes vs chromosome length
+ggplot(chromosome, aes(x = basepairs, y = protein_codinggenes)) +
+  geom_point(color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "darkred") +
+  theme_minimal() +
+  labs(title = "Correlation between Chromosome size and Protein coding genes",
+       x = "Chromosome Size (bp)", y = "Number of Protein Coding Genes")
+```
+
+c-2 miRNAs
+
+```{r}
+# miRNAs vs chromosome length
+ggplot(chromosome, aes(x = basepairs, y = mi_rna)) +
+  geom_point(color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "darkred") +
+  theme_minimal() +
+  labs(title = "Correlation between Chromosome size and miRNAs",
+       x = "Chromosome Size (bp)", y = "Number of miRNAs")
+```
+
+d. Calculate the same summary statistics for the ‘proteins’ data variables length and mass. Create a meaningful visualization of the relationship between these two variables by utilizing the ggplot2 package functions. Play with the colors, theme- and other visualization parameters to create a plot that pleases you.
+
+A:
+d-1
+
+```{r}
+# Summary statistics
+p <- proteins %>%
+  summarise(
+    mean_length = mean(length, na.rm = TRUE),
+    median_length = median(length, na.rm = TRUE),
+    max_length = max(length, na.rm = TRUE),
+    
+    mean_mass = mean(mass, na.rm = TRUE),
+    median_mass = median(mass, na.rm = TRUE),
+    max_mass = max(mass, na.rm = TRUE)
+  )
+p
+```
+
+d-2
+
+```{r}
+# Scatter plot of length vs mass
+ggplot(proteins, aes(x = length, y = mass)) +
+  geom_point(color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "darkred") +
+  theme_minimal() +
+  labs(title = "Correlation between Protein Length and Mass",
+       x = "Protein Length (aa)", y = "Protein Mass (kDa)")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

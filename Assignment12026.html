@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Assignment 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Assignment12026_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Assignment12026_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Assignment12026_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Assignment12026_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Assignment12026_files/libs/quarto-html/popper.min.js"></script>
+<script src="Assignment12026_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Assignment12026_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Assignment12026_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Assignment12026_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Assignment12026_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Assignment12026_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Assignment12026_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Assignment 1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<h3 class="anchored">
+<p><b>Task 1</b></p><b>
+<p>Q1. What is the medically relevant insight from the article?</p>
+<p>A1. The paper presents a single-cell atlas of transcribed cis-regulatory elements (tCREs) across human tissues. Key medical insight: Many disease-associated genetic variants are located in non-coding regions. Identifying cell-type-specific regulatory elements can help explain how these variants influence gene expression and contribute to complex diseases. The atlas also shows that different cell types may use different regulatory elements to control the same gene, which may reveal disease mechanisms missed by gene-expression analysis alone.</p>
+<p>Q2. Which genomics technology/ technologies were used?</p>
+<p>A2. Single-cell 5′ RNA-seq: Main technology to identify transcription start sites and transcribed regulatory elements. scATAC-seq: To examine chromatin accessibility. Bulk RNA-seq and CAGE: To validate transcriptional activity and transcription start sites. Promoter-capture Hi-C: To investigate interactions between distal regulatory elements and promoters.</p>
+<p>Q3. List and explain at least three questions/ hypotheses you can think of that extend the analysis presented in the paper.</p>
+<p>A3. ・How do regulatory elements contribute to disease-associated genetic variants? ・How does cellular activation change regulatory-element activity? ・Do males and females have different regulatory mechanisms in disease-relevant cells?</p>
+<h3 class="anchored">
+<p><b>Task 2</b></p><b>
+<p>The new project has been started in Github.</p>
+<h3 class="anchored">
+<p><b>Task 3</b></p><b>
+<ol type="1">
+<li><p>The latest version of R stadio has been installed.</p></li>
+<li><p>Bioconductor installation</p></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Background work</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Bioconductor version 3.22 (BiocManager 1.30.27), R 4.5.2 (2025-10-31)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Old packages: 'biomaRt', 'languageserver', 'mgcv', 'OmnipathR'</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Tidyverse installation</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"tidyverse"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>4.Related introduction has be reviewed.</p>
+<h3 class="anchored">
+<p><b>Task 4</b></p><b>
+<ol type="1">
+<li>What is the square root of 10?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.162278</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>What is the logarithm of 32 to the base 2?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">32</span>, <span class="at">base =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>What is the sum of the numbers from 1 to 1000?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 500500</code></pre>
+</div>
+</div>
+<ol start="4" type="1">
+<li>What is the sum of all even numbers from 2 to 1000?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">1000</span>, <span class="at">by =</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 250500</code></pre>
+</div>
+</div>
+<ol start="5" type="1">
+<li>How many pairwise comparisons are there for 100 genes?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">choose</span>(<span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4950</code></pre>
+</div>
+</div>
+<ol start="6" type="1">
+<li>And how many ways to arrange 100 genes in triples?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factorial</span>(<span class="dv">100</span>) <span class="sc">/</span> <span class="fu">factorial</span>(<span class="dv">100</span> <span class="sc">-</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 970200</code></pre>
+</div>
+</div>
+<h3 class="anchored">
+<p><b>Task 5</b></p><b>
+<ol type="1">
+<li>Use the R internal CO2 dataset (“data(CO2)”).</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(CO2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="1">
+<li>Describe briefly the content of the CO2 dataset using the help function.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>?CO2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Description: The CO2 data frame has 84 rows and 5 columns of data from an experiment on the cold tolerance of the grass species Echinochloa crus-galli.</p>
+<ol start="3" type="1">
+<li>What is the average and median CO2 uptake of the plants from Quebec and Mississippi?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>CO2 <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Type) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_uptake =</span> <span class="fu">mean</span>(uptake), <span class="at">median_uptake =</span> <span class="fu">median</span>(uptake))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  Type        mean_uptake median_uptake
+  &lt;fct&gt;             &lt;dbl&gt;         &lt;dbl&gt;
+1 Quebec             33.5          37.2
+2 Mississippi        20.9          19.3</code></pre>
+</div>
+</div>
+<ol start="4" type="1">
+<li>[Optional] In the “airway” example data from Bioconductor, how many genes are expressed in each sample? How many genes are not expressed in any sample?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"airway"</span>, <span class="at">ask =</span> <span class="cn">FALSE</span>, <span class="at">update =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Bioconductor version 3.22 (BiocManager 1.30.27), R 4.5.2 (2025-10-31)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package(s) not installed when version(s) same as or greater than current; use
+  `force = TRUE` to re-install: 'airway'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Old packages: 'biomaRt', 'languageserver', 'mgcv', 'OmnipathR'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+The downloaded binary packages are in
+    /var/folders/lx/0s3hdy2n14l6y19lznd8dyvh0000gn/T//Rtmp3MGllr/downloaded_packages</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(airway)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: SummarizedExperiment</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: MatrixGenerics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: matrixStats</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'matrixStats'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    count</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'MatrixGenerics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:matrixStats':
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: GenomicRanges</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: stats4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: BiocGenerics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: generics</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'generics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    explain</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+    setequal, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'BiocGenerics'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    combine</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+    get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique,
+    unsplit, which.max, which.min</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: S4Vectors</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'S4Vectors' was built under R version 4.5.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'S4Vectors'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    first, rename</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:utils':
+
+    findMatches</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    expand.grid, I, unname</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: IRanges</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'IRanges'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:dplyr':
+
+    collapse, desc, slice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Seqinfo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Biobase</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'Biobase'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:MatrixGenerics':
+
+    rowMedians</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:matrixStats':
+
+    anyMissing, rowMedians</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"airway"</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>Expression <span class="ot">&lt;-</span> <span class="fu">assay</span>(airway) </span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of expressed genes (non-zero) per sample</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>expressed_per_sample <span class="ot">&lt;-</span> <span class="fu">colSums</span>(Expression <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of genes not expressed in any sample</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>not_expressed <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">rowSums</span>(Expression <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print</span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>expressed_per_sample</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SRR1039508 SRR1039509 SRR1039512 SRR1039513 SRR1039516 SRR1039517 SRR1039520 
+     24633      24527      25699      23124      25508      25998      24662 
+SRR1039521 
+     23991 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>not_expressed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 30208</code></pre>
+</div>
+</div>
+<h3 class="anchored">
+<p><b>Task 6</b></p><b>
+<ol type="1">
+<li>Write a function that calculates the ratio of the mean and the median of a given vector.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>mean_median_ratio <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(x) <span class="sc">/</span> <span class="fu">median</span>(x))</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="1">
+<li>Write a function that ignores the lowest and the highest value from a given vector and calculate the mean.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>mean_trimmed <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  x_sorted <span class="ot">&lt;-</span> <span class="fu">sort</span>(x)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(x_sorted[<span class="dv">2</span><span class="sc">:</span>(<span class="fu">length</span>(x_sorted) <span class="sc">-</span> <span class="dv">1</span>)]))</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="3" type="1">
+<li>Read about piping from here:https://r4ds.had.co.nz/pipes.html#pipes ). Write a short (max. 300 characters, no spaces) explanation of why, how, and when not to use pipes.</li>
+</ol>
+<p>A: Pipes make code clearer by chaining functions in order. Use them when applying multiple processes step by step. Avoid using them when logic is too complex.</p>
+<ol start="4" type="1">
+<li>Familiarize yourself with the apply-family of functions (apply, lapply, sapply etc.) Write a short explanation (max. 300 characters, no spaces) of why they could be useful in your work.</li>
+</ol>
+<p>A: Apply functions help replace explicit loops, making code shorter and faster. They are useful for applying a function across rows, columns, or list elements without writing repetitive for loops.</p>
+<hr>
+<h3 class="anchored">
+<p><b>Task 7 1. Compare the distributions of the body heights of the two species from the ‘magic_guys.csv’ dataset graphically a. using the basic ‘hist’ function as well as ‘ggplot’ and ‘geom_histogram’ functions from the ggplot2 package. Optimize the plots for example by trying several different ‘breaks’. Note that ggplot2-based functions give you many more options for changing the visualization parameters, try some of them.</b></p><b>
+<p>A: a-1 basic hist</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"magic_guys.csv"</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(data<span class="sc">$</span>length[data<span class="sc">$</span>species <span class="sc">==</span> <span class="st">"jedi"</span>], </span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>),</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">range</span>(data<span class="sc">$</span>length), <span class="at">main =</span> <span class="st">"Height Distribution"</span>,</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Height"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(data<span class="sc">$</span>length[data<span class="sc">$</span>species <span class="sc">==</span> <span class="st">"sith"</span>], </span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>),</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">range</span>(data<span class="sc">$</span>length), <span class="at">main =</span> <span class="st">"Height Distribution"</span>,</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Height"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># different "break" value</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(data<span class="sc">$</span>length[data<span class="sc">$</span>species <span class="sc">==</span> <span class="st">"jedi"</span>], </span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="dv">10</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>),</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">range</span>(data<span class="sc">$</span>length), <span class="at">main =</span> <span class="st">"Height Distribution"</span>,</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Height"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(data<span class="sc">$</span>length[data<span class="sc">$</span>species <span class="sc">==</span> <span class="st">"sith"</span>], </span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="dv">10</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>),</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">range</span>(data<span class="sc">$</span>length), <span class="at">main =</span> <span class="st">"Height Distribution"</span>,</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Height"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>a-2-1 ggplot</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">position =</span> <span class="st">"identity"</span>, <span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Height Distribution by Species"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>a-2-2 ggplot parameter changing</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">position =</span> <span class="st">"identity"</span>, <span class="at">bins =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Height Distribution by Species (bins = 15)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Do the same comparison as in a. but with boxplots. If you want to use the ggplot2-package, use the functions ‘ggplot’ and ‘geom_boxplot’.</li>
+</ol>
+<p>A: b-1 basic R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(length <span class="sc">~</span> species, <span class="at">data =</span> data, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"lightpink"</span>, <span class="st">"lightblue"</span>),</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Boxplot of Heights"</span>, <span class="at">ylab =</span> <span class="st">"Height"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>b-2 ggplot</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Heights"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Save the plots with the ‘png’, ‘pdf’, and ‘svg’ formats. In which situation would you use which file format?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"boxplot.png"</span>); <span class="fu">print</span>(</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Heights"</span>));</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  dev.off()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"boxplot.pdf"</span>); <span class="fu">print</span>(</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Heights"</span>));</span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  dev.off()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">svg</span>(<span class="st">"boxplot.svg"</span>); <span class="fu">print</span>(</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> length, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Heights"</span>));</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grSoftVersion(): unable to load shared object '/Library/Frameworks/R.framework/Resources/modules//R_X11.so':
+  dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 0x0006): Library not loaded: /opt/X11/lib/libSM.6.dylib
+  Referenced from: &lt;7ECC4104-EC6A-38FD-9BEA-BFE0B870925C&gt; /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/modules/R_X11.so
+  Reason: tried: '/opt/X11/lib/libSM.6.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libSM.6.dylib' (no such file), '/opt/X11/lib/libSM.6.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libSM.6.dylib' (no such file), '/Library/Java/JavaVirtualMachines/jdk-11.0.18+10/Contents/Home/lib/server/libSM.6.dylib' (no such file)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cairoVersion(): unable to load shared object '/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so':
+  dlopen(/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so, 0x0006): Library not loaded: /opt/X11/lib/libXrender.1.dylib
+  Referenced from: &lt;263B701F-2238-3478-A7D2-B7513231EF98&gt; /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/grDevices/libs/cairo.so
+  Reason: tried: '/opt/X11/lib/libXrender.1.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libXrender.1.dylib' (no such file), '/opt/X11/lib/libXrender.1.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libXrender.1.dylib' (no such file), '/Library/Java/JavaVirtualMachines/jdk-11.0.18+10/Contents/Home/lib/server/libXrender.1.dylib' (no such file)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in svg("boxplot.svg"): failed to load cairo DLL</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  dev.off()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>PNG → good for quick viewing, slides, or raster images.</p>
+<p>PDF → vector graphics, best for publications.</p>
+<p>SVG → scalable web graphics, useful for editing in Illustrator or Inkscape.</p>
+<ol start="2" type="1">
+<li>Load the gene expression data matrix from the ‘microarray_data.tab’ dataset provided in the shared folder, it is a big tabular separated matrix.</li>
+</ol>
+<ol type="a">
+<li>How big is the matrix in terms of rows and columns?</li>
+</ol>
+<p>A: 553 rows and 1000 columns.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>microarray <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"microarray_data.tab"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Dimensions</span></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(microarray)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  553 1000</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Count the missing values per gene and visualize this result.</li>
+</ol>
+<p>A: b-1</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>missing_counts <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(microarray))</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(missing_counts, <span class="at">main =</span> <span class="st">"Missing values per gene"</span>, <span class="at">xlab =</span> <span class="st">"Missing values"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>b-2</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(missing_counts) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Gene"</span>, <span class="fu">seq_along</span>(missing_counts))</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(missing_counts,</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">names.arg =</span> <span class="fu">names</span>(missing_counts),   <span class="co">#  gene num</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">2</span>,                      </span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">cex.names =</span> <span class="fl">0.6</span>,              <span class="co"># font size</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Missing values per gene"</span>,</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Gene index"</span>,</span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Missing values"</span>,</span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="st">"grey30"</span>,</span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">border =</span> <span class="cn">NA</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Find the genes for which there are more than X% (X=10%, 20%, 50%) missing values.</li>
+</ol>
+<p>A: c-1</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>genes_missing <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  n_samples <span class="ot">&lt;-</span> <span class="fu">ncol</span>(microarray)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span> (<span class="fu">which</span>(missing_counts <span class="sc">&gt;</span> x <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span> n_samples))</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="fu">genes_missing</span>(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Gene2   Gene5   Gene7  Gene13  Gene17  Gene18  Gene19  Gene21  Gene24  Gene25 
+      2       5       7      13      17      18      19      21      24      25 
+ Gene26  Gene27  Gene28  Gene29  Gene30  Gene31  Gene32  Gene33  Gene34  Gene35 
+     26      27      28      29      30      31      32      33      34      35 
+ Gene36  Gene37  Gene38  Gene39  Gene40  Gene41  Gene42  Gene43  Gene44  Gene45 
+     36      37      38      39      40      41      42      43      44      45 
+ Gene46  Gene47  Gene48  Gene49  Gene50  Gene51  Gene52  Gene53  Gene54  Gene55 
+     46      47      48      49      50      51      52      53      54      55 
+ Gene56  Gene57  Gene58  Gene59  Gene60  Gene61  Gene62  Gene63  Gene64  Gene65 
+     56      57      58      59      60      61      62      63      64      65 
+ Gene66  Gene67  Gene68  Gene69  Gene70  Gene71  Gene72  Gene75  Gene76  Gene77 
+     66      67      68      69      70      71      72      75      76      77 
+ Gene78  Gene79  Gene80  Gene81  Gene82  Gene83  Gene84  Gene85  Gene86  Gene87 
+     78      79      80      81      82      83      84      85      86      87 
+ Gene88  Gene89  Gene90  Gene91  Gene92  Gene93  Gene94  Gene95  Gene96  Gene97 
+     88      89      90      91      92      93      94      95      96      97 
+ Gene98  Gene99 Gene100 Gene101 Gene102 Gene103 Gene104 Gene105 Gene106 Gene107 
+     98      99     100     101     102     103     104     105     106     107 
+Gene108 Gene109 Gene110 Gene111 Gene112 Gene113 Gene115 Gene116 Gene118 Gene119 
+    108     109     110     111     112     113     115     116     118     119 
+Gene120 Gene121 Gene122 Gene123 Gene124 Gene126 Gene127 Gene128 Gene129 Gene130 
+    120     121     122     123     124     126     127     128     129     130 
+Gene131 Gene132 Gene133 Gene134 Gene135 Gene136 Gene137 Gene138 Gene139 Gene140 
+    131     132     133     134     135     136     137     138     139     140 
+Gene141 Gene142 Gene143 Gene144 Gene145 Gene146 Gene147 Gene148 Gene149 Gene150 
+    141     142     143     144     145     146     147     148     149     150 
+Gene151 Gene152 Gene153 Gene154 Gene155 Gene157 Gene158 Gene159 Gene160 Gene161 
+    151     152     153     154     155     157     158     159     160     161 
+Gene162 Gene163 Gene164 Gene165 Gene166 Gene168 Gene169 Gene170 Gene171 Gene172 
+    162     163     164     165     166     168     169     170     171     172 
+Gene173 Gene174 Gene176 Gene177 Gene178 Gene179 Gene182 Gene183 Gene187 Gene193 
+    173     174     176     177     178     179     182     183     187     193 
+Gene195 Gene202 Gene203 Gene209 Gene214 Gene215 Gene216 Gene217 Gene219 Gene226 
+    195     202     203     209     214     215     216     217     219     226 
+Gene237 Gene238 Gene240 Gene241 Gene243 Gene249 Gene250 Gene251 Gene260 Gene262 
+    237     238     240     241     243     249     250     251     260     262 
+Gene263 Gene264 Gene270 Gene273 Gene276 Gene277 Gene280 Gene282 Gene285 Gene286 
+    263     264     270     273     276     277     280     282     285     286 
+Gene288 Gene290 Gene291 Gene294 Gene295 Gene303 Gene304 Gene308 Gene311 Gene312 
+    288     290     291     294     295     303     304     308     311     312 
+Gene320 Gene322 Gene323 Gene327 Gene328 Gene331 Gene332 Gene333 Gene335 Gene336 
+    320     322     323     327     328     331     332     333     335     336 
+Gene337 Gene338 Gene339 Gene340 Gene341 Gene342 Gene343 Gene344 Gene345 Gene346 
+    337     338     339     340     341     342     343     344     345     346 
+Gene347 Gene348 Gene349 Gene350 Gene351 Gene352 Gene353 Gene354 Gene355 Gene356 
+    347     348     349     350     351     352     353     354     355     356 
+Gene357 Gene358 Gene359 Gene360 Gene361 Gene362 Gene363 Gene364 Gene365 Gene366 
+    357     358     359     360     361     362     363     364     365     366 
+Gene367 Gene368 Gene369 Gene371 Gene372 Gene373 Gene374 Gene375 Gene376 Gene377 
+    367     368     369     371     372     373     374     375     376     377 
+Gene379 Gene382 Gene383 Gene386 Gene387 Gene388 Gene389 Gene390 Gene391 Gene392 
+    379     382     383     386     387     388     389     390     391     392 
+Gene393 Gene394 Gene395 Gene396 Gene400 Gene401 Gene406 Gene417 Gene418 Gene419 
+    393     394     395     396     400     401     406     417     418     419 
+Gene420 Gene424 Gene427 Gene428 Gene432 Gene435 Gene436 Gene437 Gene439 Gene440 
+    420     424     427     428     432     435     436     437     439     440 
+Gene441 Gene442 Gene443 Gene444 Gene445 Gene446 Gene447 Gene448 Gene449 Gene450 
+    441     442     443     444     445     446     447     448     449     450 
+Gene451 Gene452 Gene453 Gene455 Gene456 Gene457 Gene458 Gene461 Gene462 Gene465 
+    451     452     453     455     456     457     458     461     462     465 
+Gene469 Gene478 Gene479 Gene483 Gene493 Gene495 Gene498 Gene500 Gene502 Gene503 
+    469     478     479     483     493     495     498     500     502     503 
+Gene504 Gene505 Gene506 Gene509 Gene511 Gene513 Gene514 Gene515 Gene516 Gene517 
+    504     505     506     509     511     513     514     515     516     517 
+Gene518 Gene519 Gene520 Gene521 Gene522 Gene523 Gene527 Gene529 Gene534 Gene536 
+    518     519     520     521     522     523     527     529     534     536 
+Gene537 Gene541 Gene546 Gene547 Gene548 Gene550 Gene551 
+    537     541     546     547     548     550     551 </code></pre>
+</div>
+</div>
+<p>c-2</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">genes_missing</span>(<span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Gene2   Gene7  Gene17  Gene18  Gene19  Gene21  Gene24  Gene25  Gene26  Gene27 
+      2       7      17      18      19      21      24      25      26      27 
+ Gene28  Gene29  Gene30  Gene31  Gene32  Gene33  Gene34  Gene35  Gene36  Gene37 
+     28      29      30      31      32      33      34      35      36      37 
+ Gene38  Gene39  Gene40  Gene41  Gene42  Gene43  Gene44  Gene45  Gene46  Gene47 
+     38      39      40      41      42      43      44      45      46      47 
+ Gene48  Gene49  Gene50  Gene51  Gene52  Gene53  Gene54  Gene55  Gene56  Gene57 
+     48      49      50      51      52      53      54      55      56      57 
+ Gene58  Gene59  Gene60  Gene61  Gene62  Gene63  Gene64  Gene65  Gene66  Gene67 
+     58      59      60      61      62      63      64      65      66      67 
+ Gene68  Gene69  Gene70  Gene71  Gene72  Gene75  Gene76  Gene77  Gene78  Gene79 
+     68      69      70      71      72      75      76      77      78      79 
+ Gene80  Gene81  Gene82  Gene83  Gene84  Gene85  Gene86  Gene87  Gene88  Gene89 
+     80      81      82      83      84      85      86      87      88      89 
+ Gene90  Gene91  Gene92  Gene93  Gene94  Gene95  Gene96  Gene97  Gene98  Gene99 
+     90      91      92      93      94      95      96      97      98      99 
+Gene100 Gene101 Gene102 Gene103 Gene104 Gene105 Gene106 Gene107 Gene109 Gene110 
+    100     101     102     103     104     105     106     107     109     110 
+Gene112 Gene113 Gene115 Gene116 Gene118 Gene119 Gene120 Gene121 Gene122 Gene123 
+    112     113     115     116     118     119     120     121     122     123 
+Gene124 Gene126 Gene127 Gene128 Gene129 Gene130 Gene132 Gene133 Gene134 Gene135 
+    124     126     127     128     129     130     132     133     134     135 
+Gene136 Gene137 Gene138 Gene139 Gene140 Gene141 Gene142 Gene143 Gene144 Gene145 
+    136     137     138     139     140     141     142     143     144     145 
+Gene146 Gene147 Gene148 Gene149 Gene150 Gene151 Gene152 Gene153 Gene154 Gene155 
+    146     147     148     149     150     151     152     153     154     155 
+Gene157 Gene158 Gene159 Gene160 Gene161 Gene162 Gene163 Gene164 Gene165 Gene166 
+    157     158     159     160     161     162     163     164     165     166 
+Gene168 Gene169 Gene170 Gene171 Gene172 Gene173 Gene174 Gene177 Gene182 Gene183 
+    168     169     170     171     172     173     174     177     182     183 
+Gene193 Gene195 Gene209 Gene214 Gene215 Gene237 Gene241 Gene250 Gene251 Gene282 
+    193     195     209     214     215     237     241     250     251     282 
+Gene285 Gene308 Gene323 Gene328 Gene335 Gene336 Gene337 Gene338 Gene339 Gene340 
+    285     308     323     328     335     336     337     338     339     340 
+Gene341 Gene342 Gene343 Gene344 Gene345 Gene346 Gene347 Gene348 Gene349 Gene350 
+    341     342     343     344     345     346     347     348     349     350 
+Gene351 Gene352 Gene353 Gene354 Gene355 Gene356 Gene357 Gene358 Gene359 Gene360 
+    351     352     353     354     355     356     357     358     359     360 
+Gene361 Gene362 Gene363 Gene364 Gene365 Gene366 Gene367 Gene368 Gene369 Gene371 
+    361     362     363     364     365     366     367     368     369     371 
+Gene373 Gene377 Gene382 Gene395 Gene396 Gene401 Gene418 Gene424 Gene427 Gene428 
+    373     377     382     395     396     401     418     424     427     428 
+Gene435 Gene436 Gene437 Gene441 Gene443 Gene444 Gene445 Gene446 Gene447 Gene448 
+    435     436     437     441     443     444     445     446     447     448 
+Gene450 Gene451 Gene455 Gene461 Gene498 Gene506 Gene514 Gene515 Gene519 Gene520 
+    450     451     455     461     498     506     514     515     519     520 
+Gene522 Gene534 Gene536 Gene541 Gene546 Gene548 
+    522     534     536     541     546     548 </code></pre>
+</div>
+</div>
+<p>c-3</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">genes_missing</span>(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Gene17  Gene57 Gene135 Gene241 Gene250 Gene335 Gene340 Gene541 
+     17      57     135     241     250     335     340     541 </code></pre>
+</div>
+</div>
+<ol start="4" type="a">
+<li>Replace the missing values by the average expression value for the particular gene. (Note: Imputing data has to be used with caution!) A:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>microarray_imputed <span class="ot">&lt;-</span> microarray</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>row_means <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(microarray, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(microarray_imputed)) {</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  microarray_imputed[i, <span class="fu">is.na</span>(microarray_imputed[i, ])] <span class="ot">&lt;-</span> row_means[i]</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="co"># test</span></span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>missing_counts_2 <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(microarray_imputed))</span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>missing_counts_2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+ [16]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+ [31]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+ [46]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+ [61]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+ [76]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+ [91]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[106]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[121]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[136]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[151]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[166]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[181]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[196]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[211]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[226]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[241]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[256]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[271]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[286]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[301]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[316]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[331]    0    0    0    0    0    0    0    0    0 1000    0    0    0    0    0
+[346]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[361]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[376]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[391]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[406]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[421]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[436]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[451]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[466]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[481]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[496]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[511]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[526]    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+[541] 1000    0    0    0    0    0    0    0    0    0    0    0    0</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Visualize the data in the CO2 dataset in a way that gives you a deeper understanding of the data. What do you see? A: Plants from Quebec and Mississippi respond differently to CO2 concentration. Treatment (chilled vs nonchilled) also influences uptake.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of uptake vs concentration by Type and Treatment</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CO2, <span class="fu">aes</span>(<span class="at">x =</span> conc, <span class="at">y =</span> uptake, <span class="at">color =</span> Type, <span class="at">shape =</span> Treatment)) <span class="sc">+</span></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"CO2 Uptake vs Concentration"</span>,</span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"CO2 concentration"</span>,</span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Uptake"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<h3 class="anchored">
+<p><b>Task 8</b></p><b>
+<ol type="1">
+<li>Install the Tidybiology package, which includes the data ‘chromosome’ and ‘proteins’ devtools::install_github(“hirscheylab/tidybiology”)</li>
+</ol>
+<p>A: Installation</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"hirscheylab/tidybiology"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `install_github()` was deprecated in devtools 2.5.0.
+ℹ Please use pak::pak("user/repo") instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using GitHub PAT from the git credential store.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Downloading GitHub repo hirscheylab/tidybiology@HEAD</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+── R CMD build ─────────────────────────────────────────────────────────────────
+* checking for file ‘/private/var/folders/lx/0s3hdy2n14l6y19lznd8dyvh0000gn/T/Rtmp3MGllr/remotes65e14d3ccba/tidybiology-tidybiology-d03a810/DESCRIPTION’ ... OK
+* preparing ‘tidybiology’:
+* checking DESCRIPTION meta-information ... OK
+Warning in person1(given = given[[i]], family = family[[i]], middle = middle[[i]],  :
+  Invalid ORCID iD: ‘0000’.
+* checking for LF line-endings in source and make files and shell scripts
+* checking for empty or unneeded directories
+* building ‘tidybiology_0.1.0.tar.gz’</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybiology)</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ lubridate 1.9.5     ✔ tibble    3.3.1
+✔ purrr     1.2.2     ✔ tidyr     1.3.2
+✔ readr     2.2.0     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ lubridate::%within%() masks IRanges::%within%()
+✖ IRanges::collapse()   masks dplyr::collapse()
+✖ Biobase::combine()    masks BiocGenerics::combine(), dplyr::combine()
+✖ matrixStats::count()  masks dplyr::count()
+✖ IRanges::desc()       masks dplyr::desc()
+✖ tidyr::expand()       masks S4Vectors::expand()
+✖ dplyr::filter()       masks stats::filter()
+✖ S4Vectors::first()    masks dplyr::first()
+✖ dplyr::lag()          masks stats::lag()
+✖ ggplot2::Position()   masks BiocGenerics::Position(), base::Position()
+✖ purrr::reduce()       masks GenomicRanges::reduce(), IRanges::reduce()
+✖ S4Vectors::rename()   masks dplyr::rename()
+✖ lubridate::second()   masks S4Vectors::second()
+✖ lubridate::second&lt;-() masks S4Vectors::second&lt;-()
+✖ IRanges::slice()      masks dplyr::slice()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the datasets</span></span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"chromosome"</span>)</span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"proteins"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol type="a">
+<li>Extract summary statistics (mean, median and maximum) for the following variables from the ‘chromosome’ data: variations, protein coding genes, and miRNAs. Utilize the tidyverse functions to make this as simply as possible.</li>
+</ol>
+<p>A:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> chromosome <span class="sc">%&gt;%</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_variations =</span> <span class="fu">mean</span>(variations, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_variations =</span> <span class="fu">median</span>(variations, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_variations =</span> <span class="fu">max</span>(variations, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_protein_coding =</span> <span class="fu">mean</span>(protein_codinggenes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_protein_coding =</span> <span class="fu">median</span>(protein_codinggenes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_protein_coding =</span> <span class="fu">max</span>(protein_codinggenes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb108-11"><a href="#cb108-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_miRNAs =</span> <span class="fu">mean</span>(mi_rna, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-12"><a href="#cb108-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_miRNAs =</span> <span class="fu">median</span>(mi_rna, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb108-13"><a href="#cb108-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_miRNAs =</span> <span class="fu">max</span>(mi_rna, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb108-14"><a href="#cb108-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb108-15"><a href="#cb108-15" aria-hidden="true" tabindex="-1"></a>c</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 9
+  mean_variations median_variations max_variations mean_protein_coding
+            &lt;dbl&gt;             &lt;dbl&gt;          &lt;dbl&gt;               &lt;dbl&gt;
+1        6484572.           6172346       12945965                850.
+# ℹ 5 more variables: median_protein_coding &lt;dbl&gt;, max_protein_coding &lt;int&gt;,
+#   mean_miRNAs &lt;dbl&gt;, median_miRNAs &lt;dbl&gt;, max_miRNAs &lt;int&gt;</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>How does the chromosome size distribute? Plot a graph that helps to visualize this by using ggplot2 package functions.</li>
+</ol>
+<p>A:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(chromosome, <span class="fu">aes</span>(<span class="at">x =</span> basepairs)) <span class="sc">+</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Chromosome Size"</span>, <span class="at">x =</span> <span class="st">"Chromosome Size (bp)"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>or</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(chromosome, <span class="fu">aes</span>(<span class="at">x =</span> id, <span class="at">y =</span> basepairs)) <span class="sc">+</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Chromosome Size (bp)"</span>,</span>
+<span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Chromosome"</span>,</span>
+<span id="cb111-8"><a href="#cb111-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Size (bp)"</span></span>
+<span id="cb111-9"><a href="#cb111-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Does the number of protein coding genes or miRNAs correlate with the length of the chromosome? Make two separate plots to visualize these relationships.</li>
+</ol>
+<p>A: c-1 protein coding gene</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Protein coding genes vs chromosome length</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(chromosome, <span class="fu">aes</span>(<span class="at">x =</span> basepairs, <span class="at">y =</span> protein_codinggenes)) <span class="sc">+</span></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"darkred"</span>) <span class="sc">+</span></span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Correlation between Chromosome size and Protein coding genes"</span>,</span>
+<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Chromosome Size (bp)"</span>, <span class="at">y =</span> <span class="st">"Number of Protein Coding Genes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>c-2 miRNAs</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># miRNAs vs chromosome length</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(chromosome, <span class="fu">aes</span>(<span class="at">x =</span> basepairs, <span class="at">y =</span> mi_rna)) <span class="sc">+</span></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"darkred"</span>) <span class="sc">+</span></span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Correlation between Chromosome size and miRNAs"</span>,</span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Chromosome Size (bp)"</span>, <span class="at">y =</span> <span class="st">"Number of miRNAs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="4" type="a">
+<li>Calculate the same summary statistics for the ‘proteins’ data variables length and mass. Create a meaningful visualization of the relationship between these two variables by utilizing the ggplot2 package functions. Play with the colors, theme- and other visualization parameters to create a plot that pleases you.</li>
+</ol>
+<p>A: d-1</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> proteins <span class="sc">%&gt;%</span></span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_length =</span> <span class="fu">mean</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_length =</span> <span class="fu">median</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_length =</span> <span class="fu">max</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb116-7"><a href="#cb116-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb116-8"><a href="#cb116-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mass =</span> <span class="fu">mean</span>(mass, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_mass =</span> <span class="fu">median</span>(mass, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_mass =</span> <span class="fu">max</span>(mass, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  mean_length median_length max_length mean_mass median_mass max_mass
+        &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+1        557.           414      34350    62061.      46140.  3816030</code></pre>
+</div>
+</div>
+<p>d-2</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of length vs mass</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(proteins, <span class="fu">aes</span>(<span class="at">x =</span> length, <span class="at">y =</span> mass)) <span class="sc">+</span></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"darkred"</span>) <span class="sc">+</span></span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Correlation between Protein Length and Mass"</span>,</span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Protein Length (aa)"</span>, <span class="at">y =</span> <span class="st">"Protein Mass (kDa)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Assignment12026_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+</b></h3></b></h3></b></h3></b></h3></b></h3></b></h3></b></h3></b></h3></main><b><b><b>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</b></b></b></div><b><b><b> <!-- /content -->
+
+
+
+
+</b></b></b></body></html>
